@@ -12,21 +12,23 @@
       <sourceFolder url="file://$MODULE_DIR$/lib/robotiq/rq_sensor_state.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/CMakeLists.txt" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src/main.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/src/SensorUdpServer.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/src/SensorUdpServer.cpp" isTestSource="false" />
     </content>
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module-library">
       <library name="Header Search Paths">
         <CLASSES>
-          <root url="file://C:/MinGW/include/c++/5.3.0" />
+          <root url="file://C:/MinGW/include" />
           <root url="file://C:/MinGW/x86_64-w64-mingw32/include" />
-          <root url="file://C:/MinGW/lib/gcc/x86_64-w64-mingw32/5.3.0/include-fixed" />
           <root url="file://C:/MinGW/lib/gcc/x86_64-w64-mingw32/5.3.0/include" />
+          <root url="file://C:/MinGW/lib/gcc/x86_64-w64-mingw32/5.3.0/include-fixed" />
         </CLASSES>
         <SOURCES>
-          <root url="file://C:/MinGW/include/c++/5.3.0" />
+          <root url="file://C:/MinGW/include" />
           <root url="file://C:/MinGW/x86_64-w64-mingw32/include" />
-          <root url="file://C:/MinGW/lib/gcc/x86_64-w64-mingw32/5.3.0/include-fixed" />
           <root url="file://C:/MinGW/lib/gcc/x86_64-w64-mingw32/5.3.0/include" />
+          <root url="file://C:/MinGW/lib/gcc/x86_64-w64-mingw32/5.3.0/include-fixed" />
         </SOURCES>
       </library>
     </orderEntry>

@@ -1,6 +1,8 @@
 #include <string.h>
 #include <stdio.h>
 #include <windows.h>
+#include "SensorUdpServer.h"
+#include <boost/asio.hpp>
 
 extern "C"
 {
@@ -10,14 +12,10 @@ extern "C"
 #include "rq_int.h"
 }
 
-/**
- * \fn static void wait_for_other_connection()
- * \brief Function who wait for another connection
- */
-static void wait_for_other_connection() {
+static void waitForOtherConnection() {
     INT_8 ret;
-    while (1) {
-        Sleep(1000);// wait 1 seconde
+    while (true) {
+        Sleep(1000);// wait 1 second
         ret = rq_sensor_state();
         if (ret == 0) {
             break;
@@ -25,12 +23,7 @@ static void wait_for_other_connection() {
     }
 }
 
-/**
- * \fn void get_data(void)
- * \brief Function to retrieve the power applied to the sensor
- * \param chr_return String to return forces applied
- */
-static void get_data(INT_8 *chr_return) {
+static void getData(INT_8 *chr_return) {
     INT_8 i;
     INT_8 floatData[50];
     for (i = 0; i < 6; i++) {
@@ -49,53 +42,48 @@ static void get_data(INT_8 *chr_return) {
     }
 }
 
-int main() {
+void serveData() {
     //IF can't connect with the sensor wait for another connection
     INT_8 ret = rq_sensor_state();
     if (ret == -1) {
-        wait_for_other_connection();
+        waitForOtherConnection();
     }
 
     //Read high-level informations
     ret = rq_sensor_state();
     if (ret == -1) {
-        wait_for_other_connection();
+        waitForOtherConnection();
     }
 
     //Initialize connection with the client
     ret = rq_sensor_state();
     if (ret == -1) {
-        wait_for_other_connection();
+        waitForOtherConnection();
     }
 
-    /*
-     * Here comes the code to establish a connection with the application
-    */
+    // set up UDP async server
+    boost::asio::io_service io_service;
+    SensorUdpServer server(io_service);
+    io_service.run();
 
     //INT_8 buffer[512]; //Init of the variable receiving the message
     INT_8 bufStream[512];
-    while (1) {
-        /*strcpy(buffer,"");
-        *  // Here we receive the message of the application to read
-        *  // high level variable.
-        *if(strcmp(buffer, "") != 0)
-        *{
-        *	decode_message_and_do(buffer);
-        *}
-        */
-
+    while (true) {
         ret = rq_sensor_state();
+
         if (ret == -1) {
-            wait_for_other_connection();
+            waitForOtherConnection();
         }
+
         if (rq_sensor_get_current_state() == RQ_STATE_RUN) {
             strcpy(bufStream, "");
-            get_data(bufStream);
+            getData(bufStream);
             printf("%s\n", bufStream);
-            /*
-             * Here comes the code to send the data to the application.
-            */
         }
     }
+}
+
+int main() {
+    serveData();
     return 0;
 }
