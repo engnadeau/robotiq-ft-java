@@ -17,32 +17,17 @@
     <orderEntry type="module-library">
       <library name="Header Search Paths">
         <CLASSES>
+          <root url="file://C:/MinGW/include/c++/5.3.0" />
+          <root url="file://C:/MinGW/x86_64-w64-mingw32/include" />
           <root url="file://C:/MinGW/lib/gcc/x86_64-w64-mingw32/5.3.0/include-fixed" />
           <root url="file://C:/MinGW/lib/gcc/x86_64-w64-mingw32/5.3.0/include" />
-          <root url="file://C:/MinGW/x86_64-w64-mingw32/include" />
-          <root url="file://C:/MinGW/include/c++/5.3.0" />
-          <root url="file://$MODULE_DIR$/lib/robotiq" />
-          <root url="file://$MODULE_DIR$/src" />
         </CLASSES>
         <SOURCES>
+          <root url="file://C:/MinGW/include/c++/5.3.0" />
+          <root url="file://C:/MinGW/x86_64-w64-mingw32/include" />
           <root url="file://C:/MinGW/lib/gcc/x86_64-w64-mingw32/5.3.0/include-fixed" />
           <root url="file://C:/MinGW/lib/gcc/x86_64-w64-mingw32/5.3.0/include" />
-          <root url="file://C:/MinGW/x86_64-w64-mingw32/include" />
-          <root url="file://C:/MinGW/include/c++/5.3.0" />
-          <root url="file://$MODULE_DIR$/lib/robotiq" />
-          <root url="file://$MODULE_DIR$/src" />
         </SOURCES>
-        <excluded>
-          <root url="file://$MODULE_DIR$/lib/robotiq/mutex.c" />
-          <root url="file://$MODULE_DIR$/lib/robotiq/rq_sensor_com.c" />
-          <root url="file://$MODULE_DIR$/lib/robotiq/rq_sensor_com.h" />
-          <root url="file://$MODULE_DIR$/lib/robotiq/rq_sensor_state.c" />
-          <root url="file://$MODULE_DIR$/lib/robotiq/rq_thread.h" />
-          <root url="file://$MODULE_DIR$/lib/robotiq/mutex.h" />
-          <root url="file://$MODULE_DIR$/lib/robotiq/rq_thread.c" />
-          <root url="file://$MODULE_DIR$/lib/robotiq/rq_sensor_state.h" />
-          <root url="file://$MODULE_DIR$/src/main.cpp" />
-        </excluded>
       </library>
     </orderEntry>
   </component>

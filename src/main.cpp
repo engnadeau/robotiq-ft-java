@@ -1,8 +1,19 @@
-#include <iostream>
-#include <synchapi.h>
-#include "rq_int.h"
-#include "rq_sensor_state.h"
+#include <string.h>
+#include <stdio.h>
+#include <windows.h>
 
+extern "C"
+{
+#include "rq_sensor_com.h"
+#include "rq_sensor_state.h"
+#include "rq_thread.h"
+#include "rq_int.h"
+}
+
+/**
+ * \fn static void wait_for_other_connection()
+ * \brief Function who wait for another connection
+ */
 static void wait_for_other_connection() {
     INT_8 ret;
     while (1) {
@@ -14,6 +25,11 @@ static void wait_for_other_connection() {
     }
 }
 
+/**
+ * \fn void get_data(void)
+ * \brief Function to retrieve the power applied to the sensor
+ * \param chr_return String to return forces applied
+ */
 static void get_data(INT_8 *chr_return) {
     INT_8 i;
     INT_8 floatData[50];
@@ -83,4 +99,3 @@ int main() {
     }
     return 0;
 }
-
