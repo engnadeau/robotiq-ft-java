@@ -15,6 +15,9 @@ repositories {
 
 dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.11'
+
+    // https://mvnrepository.com/artifact/org.tinylog/tinylog
+    compile group: 'org.tinylog', name: 'tinylog', version: '1.1'
 }
 
 jar {
