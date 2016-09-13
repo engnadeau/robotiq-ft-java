@@ -27,6 +27,10 @@ public class RobotiqFt {
     static final int AY_REGISTER = 191;
     static final int AZ_REGISTER = 192;
 
+    static final short FORCE_DIVISOR = 100;
+    static final short MOMENT_DIVISOR = 1000;
+    static final short ACCELERATION_DIVISOR = 1000;
+
     static final String PARITY = "None";
     static final String ENCODING = "rtu";
     SerialParameters serialParameters;
@@ -65,70 +69,102 @@ public class RobotiqFt {
     public short getFx() throws ModbusException {
         InputRegister register = this.getModbusSerialMaster()
                 .readInputRegisters(UNIT_ID, FX_REGISTER, 1)[0];
-        return register.toShort();
+        return (short) (register.toShort() / FORCE_DIVISOR);
     }
 
     public short getFy() throws ModbusException {
         InputRegister register = this.getModbusSerialMaster()
                 .readInputRegisters(UNIT_ID, FY_REGISTER, 1)[0];
-        return register.toShort();
+        return (short) (register.toShort() / FORCE_DIVISOR);
     }
 
     public short getFz() throws ModbusException {
         InputRegister register = this.getModbusSerialMaster()
                 .readInputRegisters(UNIT_ID, FZ_REGISTER, 1)[0];
-        return register.toShort();
+        return (short) (register.toShort() / FORCE_DIVISOR);
     }
 
     public short getMx() throws ModbusException {
         InputRegister register = this.getModbusSerialMaster()
                 .readInputRegisters(UNIT_ID, MX_REGISTER, 1)[0];
-        return register.toShort();
+        return (short) (register.toShort() / MOMENT_DIVISOR);
     }
 
     public short getMy() throws ModbusException {
         InputRegister register = this.getModbusSerialMaster()
                 .readInputRegisters(UNIT_ID, MY_REGISTER, 1)[0];
-        return register.toShort();
+        return (short) (register.toShort() / MY_REGISTER);
     }
 
     public short getMz() throws ModbusException {
         InputRegister register = this.getModbusSerialMaster()
                 .readInputRegisters(UNIT_ID, MZ_REGISTER, 1)[0];
-        return register.toShort();
+        return (short) (register.toShort() / MOMENT_DIVISOR);
     }
 
     public short getAx() throws ModbusException {
         InputRegister register = this.getModbusSerialMaster()
                 .readInputRegisters(UNIT_ID, AX_REGISTER, 1)[0];
-        return register.toShort();
+        return (short) (register.toShort() / AX_REGISTER);
     }
 
     public short getAy() throws ModbusException {
         InputRegister register = this.getModbusSerialMaster()
                 .readInputRegisters(UNIT_ID, AY_REGISTER, 1)[0];
-        return register.toShort();
+        return (short) (register.toShort() / AY_REGISTER);
     }
 
     public short getAz() throws ModbusException {
         InputRegister register = this.getModbusSerialMaster()
                 .readInputRegisters(UNIT_ID, AZ_REGISTER, 1)[0];
-        return register.toShort();
+        return (short) (register.toShort() / AZ_REGISTER);
     }
 
     public short[] getSixAxisMeasure() throws ModbusException {
-        short[] data = {
-                this.getFx(), this.getFy(), this.getFz(),
-                this.getMx(), this.getMy(), this.getMz()};
-        return data;
+        InputRegister[] registers = this.getModbusSerialMaster()
+                .readInputRegisters(UNIT_ID, FX_REGISTER, 6);
+
+        assert registers.length == 6;
+
+        short[] result = new short[6];
+        for (int i = 0; i < 6; i++) {
+            result[i] = registers[i].toShort();
+
+            if (i < 3) {
+                result[i] /= FORCE_DIVISOR;
+            } else {
+                result[i] /= MOMENT_DIVISOR;
+            }
+        }
+        return result;
     }
 
     public short[] getNineAxisMeasure() throws ModbusException {
-        short[] data = {
-                this.getFx(), this.getFy(), this.getFz(),
-                this.getMx(), this.getMy(), this.getMz(),
-                this.getAx(), this.getAy(), this.getAz()};
-        return data;
+        InputRegister[] wrenchRegisters = this.getModbusSerialMaster()
+                .readInputRegisters(UNIT_ID, FX_REGISTER, 6);
+
+        InputRegister[] accelerationRegisters = this.getModbusSerialMaster()
+                .readInputRegisters(UNIT_ID, AX_REGISTER, 3);
+
+        assert wrenchRegisters.length == 6;
+        assert accelerationRegisters.length == 3;
+
+        short[] result = new short[9];
+        for (int i = 0; i < 6; i++) {
+            result[i] = wrenchRegisters[i].toShort();
+
+            if (i < 3) {
+                result[i] /= FORCE_DIVISOR;
+            } else {
+                result[i] /= MOMENT_DIVISOR;
+            }
+        }
+
+        for (int i = 0; i < 3; i++) {
+            result[6 + i] = (short) (accelerationRegisters[i].toShort() / ACCELERATION_DIVISOR);
+        }
+
+        return result;
     }
 
     public short[] getForces() throws ModbusException {
