@@ -1,0 +1,19 @@
+language: java
+
+jdk:
+  - oraclejdk7
+  - oraclejdk8
+  - openjdk6
+  - openjdk7
+  - openjdk8
+
+# build
+script:
+  - gradle clean
+  - gradle build
+
+after_success: coveralls
+
+# notification settings
+notifications:
+    on_failure: change
