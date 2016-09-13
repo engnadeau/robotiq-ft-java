@@ -14,7 +14,7 @@ The communication protocol (and basis for `config.properties`) for using a FT Se
 
 ### Quick Tests
 - Run `SerialUtilities.java` to list available serial ports (sensor should be connected and seen here)
-- Update `comm_port` in `config.properties` to the proper serial port (e.g., COM3 for Windows, cu.usbserial-FTXU0M1B for OSX)
+- Update `comm_port` in `config.properties` to the proper serial port (e.g., `COM3` for Windows, `cu.usbserial-FTXU0M1B` for OSX)
 - Run `RobotiqFt.java` for a 20 second burst of data printed to the console 
 
 ### Example
