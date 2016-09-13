@@ -16,9 +16,6 @@ import java.util.Properties;
  */
 public class RobotiqFt {
     private static final String CONFIG_FILE = "config.properties";
-    private int baudrate;
-    private int dataBits;
-    private int stopBit;
     private int unitID;
     private int fxRegister;
     private int fyRegister;
@@ -32,9 +29,6 @@ public class RobotiqFt {
     private double forceDivisor;
     private double momentDivisor;
     private double accelerationDivisor;
-    private String portName;
-    private String parity;
-    private String encoding;
     private SerialParameters serialParameters;
     private ModbusSerialMaster modbusSerialMaster;
 
@@ -45,7 +39,6 @@ public class RobotiqFt {
         boolean isSuccess = this.loadProperties();
 
         if (isSuccess) {
-            this.serialParameters = this.generateSerialParameters();
             this.modbusSerialMaster = new ModbusSerialMaster(this.getSerialParameters());
         } else {
             throw new IllegalStateException();
@@ -54,6 +47,7 @@ public class RobotiqFt {
 
     /**
      * Constructs a sensor object given the input.
+     *
      * @param serialParameters defined manually
      */
     public RobotiqFt(SerialParameters serialParameters) {
@@ -80,50 +74,6 @@ public class RobotiqFt {
         } catch (Exception e) {
             Logger.error(e);
         }
-    }
-
-    public String getPortName() {
-        return this.portName;
-    }
-
-    public void setPortName(String portName) {
-        this.portName = portName;
-    }
-
-    private SerialParameters generateSerialParameters() {
-        SerialParameters serialParameters = new SerialParameters();
-        serialParameters.setPortName(this.getPortName());
-        serialParameters.setBaudRate(this.getBaudrate());
-        serialParameters.setDatabits(this.getDataBits());
-        serialParameters.setStopbits(this.getStopBit());
-        serialParameters.setParity(this.getParity());
-        serialParameters.setEncoding(this.getEncoding());
-        serialParameters.setEcho(false);
-        return serialParameters;
-    }
-
-    public int getBaudrate() {
-        return this.baudrate;
-    }
-
-    public void setBaudrate(int baudrate) {
-        this.baudrate = baudrate;
-    }
-
-    public int getDataBits() {
-        return this.dataBits;
-    }
-
-    public void setDataBits(int dataBits) {
-        this.dataBits = dataBits;
-    }
-
-    public int getStopBit() {
-        return this.stopBit;
-    }
-
-    public void setStopBit(int stopBit) {
-        this.stopBit = stopBit;
     }
 
     public int getUnitID() {
@@ -230,22 +180,6 @@ public class RobotiqFt {
         this.accelerationDivisor = accelerationDivisor;
     }
 
-    public String getParity() {
-        return this.parity;
-    }
-
-    public void setParity(String parity) {
-        this.parity = parity;
-    }
-
-    public String getEncoding() {
-        return this.encoding;
-    }
-
-    public void setEncoding(String encoding) {
-        this.encoding = encoding;
-    }
-
     private boolean loadProperties() {
         Properties properties = new Properties();
         boolean isSuccess = true;
@@ -263,14 +197,19 @@ public class RobotiqFt {
 
         // set the properties
         if (isSuccess) {
-            this.setPortName(properties.getProperty("comm_port"));
+            // set serial parameter
+            SerialParameters serialParameters = new SerialParameters();
+            serialParameters.setPortName(properties.getProperty("comm_port"));
+            serialParameters.setBaudRate(Integer.parseInt(properties.getProperty("baudrate")));
+            serialParameters.setDatabits(Integer.parseInt(properties.getProperty("data_bits")));
+            serialParameters.setStopbits(Integer.parseInt(properties.getProperty("stop_bit")));
+            serialParameters.setParity(properties.getProperty("parity"));
+            serialParameters.setEncoding(properties.getProperty("encoding"));
+            serialParameters.setEcho(false);
+            this.setSerialParameters(serialParameters);
 
-            this.setBaudrate(Integer.parseInt(properties.getProperty("baudrate")));
-            this.setDataBits(Integer.parseInt(properties.getProperty("data_bits")));
-            this.setStopBit(Integer.parseInt(properties.getProperty("stop_bit")));
+            // set instance parameters
             this.setUnitID(Integer.parseInt(properties.getProperty("unit_id")));
-            this.setParity(properties.getProperty("parity"));
-            this.setEncoding(properties.getProperty("encoding"));
 
             this.setFxRegister(Integer.parseInt(properties.getProperty("fx_register")));
             this.setFyRegister(Integer.parseInt(properties.getProperty("fy_register")));
