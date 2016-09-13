@@ -65,7 +65,7 @@ public class RobotiqFt {
             long startTime = System.currentTimeMillis();
             while ((System.currentTimeMillis() - startTime) < (maxTime * 1000)) {
                 try {
-                    System.out.println(Arrays.toString(robotiqFt.getNineAxisMeasure()));
+                    System.out.println(Arrays.toString(robotiqFt.getCompleteMeasure()));
                 } catch (ModbusException e) {
                     Logger.error(e);
                 }
@@ -358,7 +358,7 @@ public class RobotiqFt {
         return result;
     }
 
-    public double[] getNineAxisMeasure() throws ModbusException {
+    public double[] getCompleteMeasure() throws ModbusException {
         InputRegister[] wrenchRegisters = this.getModbusSerialMaster()
                 .readInputRegisters(this.getUnitID(), this.getFxRegister(), 6);
 
