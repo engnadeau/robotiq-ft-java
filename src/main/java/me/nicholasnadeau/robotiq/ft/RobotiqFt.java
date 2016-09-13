@@ -6,43 +6,52 @@ import com.ghgande.j2mod.modbus.procimg.InputRegister;
 import com.ghgande.j2mod.modbus.util.SerialParameters;
 import org.pmw.tinylog.Logger;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Arrays;
+import java.util.Properties;
 
 /**
  * Created by nicholas on 2016-09-13.
  */
 public class RobotiqFt {
-    static final int BAUDRATE = 19200;
-    static final int DATA_BITS = 8;
-    static final int STOP_BIT = 1;
-    static final int UNIT_ID = 9;
+    private static final String CONFIG_FILE = "config.properties";
+    private int baudrate;
+    private int dataBits;
+    private int stopBit;
+    private int unitID;
+    private int fxRegister;
+    private int fyRegister;
+    private int fzRegister;
+    private int mxRegister;
+    private int myRegister;
+    private int mzRegister;
+    private int axRegister;
+    private int ayRegister;
+    private int azRegister;
+    private short forceDivisor;
+    private short momentDivisor;
+    private short accelerationDivisor;
+    private String portName;
+    private String parity;
+    private String encoding;
+    private SerialParameters serialParameters;
+    private ModbusSerialMaster modbusSerialMaster;
 
-    static final int FX_REGISTER = 180;
-    static final int FY_REGISTER = 181;
-    static final int FZ_REGISTER = 182;
-    static final int MX_REGISTER = 183;
-    static final int MY_REGISTER = 184;
-    static final int MZ_REGISTER = 185;
-    static final int AX_REGISTER = 190;
-    static final int AY_REGISTER = 191;
-    static final int AZ_REGISTER = 192;
+    public RobotiqFt() {
+        boolean isSuccess = this.loadProperties();
 
-    static final short FORCE_DIVISOR = 100;
-    static final short MOMENT_DIVISOR = 1000;
-    static final short ACCELERATION_DIVISOR = 1000;
-
-    static final String PARITY = "None";
-    static final String ENCODING = "rtu";
-    SerialParameters serialParameters;
-    ModbusSerialMaster modbusSerialMaster;
+        if (isSuccess) {
+            this.serialParameters = this.generateSerialParameters();
+            this.modbusSerialMaster = new ModbusSerialMaster(this.getSerialParameters());
+        } else {
+            throw new IllegalStateException();
+        }
+    }
 
     public RobotiqFt(SerialParameters serialParameters) {
         this.serialParameters = serialParameters;
         this.modbusSerialMaster = new ModbusSerialMaster(this.getSerialParameters());
-    }
-
-    public RobotiqFt() {
-        this(setDefaultSerialParameters());
     }
 
     public static void main(String[] args) {
@@ -66,63 +75,273 @@ public class RobotiqFt {
         }
     }
 
+    public String getPortName() {
+        return this.portName;
+    }
+
+    public void setPortName(String portName) {
+        this.portName = portName;
+    }
+
+    private SerialParameters generateSerialParameters() {
+        SerialParameters serialParameters = new SerialParameters();
+        serialParameters.setPortName(this.getPortName());
+        serialParameters.setBaudRate(this.getBaudrate());
+        serialParameters.setDatabits(this.getDataBits());
+        serialParameters.setStopbits(this.getStopBit());
+        serialParameters.setParity(this.getParity());
+        serialParameters.setEncoding(this.getEncoding());
+        serialParameters.setEcho(false);
+        return serialParameters;
+    }
+
+    public int getBaudrate() {
+        return this.baudrate;
+    }
+
+    public void setBaudrate(int baudrate) {
+        this.baudrate = baudrate;
+    }
+
+    public int getDataBits() {
+        return this.dataBits;
+    }
+
+    public void setDataBits(int dataBits) {
+        this.dataBits = dataBits;
+    }
+
+    public int getStopBit() {
+        return this.stopBit;
+    }
+
+    public void setStopBit(int stopBit) {
+        this.stopBit = stopBit;
+    }
+
+    public int getUnitID() {
+        return this.unitID;
+    }
+
+    public void setUnitID(int unitID) {
+        this.unitID = unitID;
+    }
+
+    public int getFxRegister() {
+        return this.fxRegister;
+    }
+
+    public void setFxRegister(int fxRegister) {
+        this.fxRegister = fxRegister;
+    }
+
+    public int getFyRegister() {
+        return this.fyRegister;
+    }
+
+    public void setFyRegister(int fyRegister) {
+        this.fyRegister = fyRegister;
+    }
+
+    public int getFzRegister() {
+        return this.fzRegister;
+    }
+
+    public void setFzRegister(int fzRegister) {
+        this.fzRegister = fzRegister;
+    }
+
+    public int getMxRegister() {
+        return this.mxRegister;
+    }
+
+    public void setMxRegister(int mxRegister) {
+        this.mxRegister = mxRegister;
+    }
+
+    public int getMyRegister() {
+        return this.myRegister;
+    }
+
+    public void setMyRegister(int myRegister) {
+        this.myRegister = myRegister;
+    }
+
+    public int getMzRegister() {
+        return this.mzRegister;
+    }
+
+    public void setMzRegister(int mzRegister) {
+        this.mzRegister = mzRegister;
+    }
+
+    public int getAxRegister() {
+        return this.axRegister;
+    }
+
+    public void setAxRegister(int axRegister) {
+        this.axRegister = axRegister;
+    }
+
+    public int getAyRegister() {
+        return this.ayRegister;
+    }
+
+    public void setAyRegister(int ayRegister) {
+        this.ayRegister = ayRegister;
+    }
+
+    public int getAzRegister() {
+        return this.azRegister;
+    }
+
+    public void setAzRegister(int azRegister) {
+        this.azRegister = azRegister;
+    }
+
+    public short getForceDivisor() {
+        return this.forceDivisor;
+    }
+
+    public void setForceDivisor(short forceDivisor) {
+        this.forceDivisor = forceDivisor;
+    }
+
+    public short getMomentDivisor() {
+        return this.momentDivisor;
+    }
+
+    public void setMomentDivisor(short momentDivisor) {
+        this.momentDivisor = momentDivisor;
+    }
+
+    public short getAccelerationDivisor() {
+        return this.accelerationDivisor;
+    }
+
+    public void setAccelerationDivisor(short accelerationDivisor) {
+        this.accelerationDivisor = accelerationDivisor;
+    }
+
+    public String getParity() {
+        return this.parity;
+    }
+
+    public void setParity(String parity) {
+        this.parity = parity;
+    }
+
+    public String getEncoding() {
+        return this.encoding;
+    }
+
+    public void setEncoding(String encoding) {
+        this.encoding = encoding;
+    }
+
+    private boolean loadProperties() {
+        Properties properties = new Properties();
+        boolean isSuccess = true;
+
+        // load a properties file
+        try {
+            ClassLoader loader = Thread.currentThread().getContextClassLoader();
+            try (InputStream inputStream = loader.getResourceAsStream(CONFIG_FILE)) {
+                properties.load(inputStream);
+            }
+        } catch (IOException e) {
+            Logger.error(e);
+            isSuccess = false;
+        }
+
+        // set the properties
+        if (isSuccess) {
+            this.setPortName(properties.getProperty("comm_port"));
+
+            this.setBaudrate(Integer.parseInt(properties.getProperty("baudrate")));
+            this.setDataBits(Integer.parseInt(properties.getProperty("data_bits")));
+            this.setStopBit(Integer.parseInt(properties.getProperty("stop_bit")));
+            this.setUnitID(Integer.parseInt(properties.getProperty("unit_id")));
+            this.setParity(properties.getProperty("parity"));
+            this.setEncoding(properties.getProperty("encoding"));
+
+            this.setFxRegister(Integer.parseInt(properties.getProperty("fx_register")));
+            this.setFyRegister(Integer.parseInt(properties.getProperty("fy_register")));
+            this.setFzRegister(Integer.parseInt(properties.getProperty("fz_register")));
+
+            this.setMxRegister(Integer.parseInt(properties.getProperty("mx_register")));
+            this.setMyRegister(Integer.parseInt(properties.getProperty("my_register")));
+            this.setMzRegister(Integer.parseInt(properties.getProperty("mz_register")));
+
+            this.setAxRegister(Integer.parseInt(properties.getProperty("ax_register")));
+            this.setAyRegister(Integer.parseInt(properties.getProperty("ay_register")));
+            this.setAzRegister(Integer.parseInt(properties.getProperty("az_register")));
+
+            this.setForceDivisor(Short.parseShort(properties.getProperty("force_divisor")));
+            this.setMomentDivisor(Short.parseShort(properties.getProperty("moment_divisor")));
+            this.setAccelerationDivisor(Short.parseShort(properties.getProperty("acceleration_divisor")));
+        }
+
+        return isSuccess;
+    }
+
     public short getFx() throws ModbusException {
         InputRegister register = this.getModbusSerialMaster()
-                .readInputRegisters(UNIT_ID, FX_REGISTER, 1)[0];
-        return (short) (register.toShort() / FORCE_DIVISOR);
+                .readInputRegisters(this.getUnitID(), this.getFxRegister(), 1)[0];
+        return (short) (register.toShort() / this.getForceDivisor());
     }
 
     public short getFy() throws ModbusException {
         InputRegister register = this.getModbusSerialMaster()
-                .readInputRegisters(UNIT_ID, FY_REGISTER, 1)[0];
-        return (short) (register.toShort() / FORCE_DIVISOR);
+                .readInputRegisters(this.getUnitID(), this.getFyRegister(), 1)[0];
+        return (short) (register.toShort() / this.getForceDivisor());
     }
 
     public short getFz() throws ModbusException {
         InputRegister register = this.getModbusSerialMaster()
-                .readInputRegisters(UNIT_ID, FZ_REGISTER, 1)[0];
-        return (short) (register.toShort() / FORCE_DIVISOR);
+                .readInputRegisters(this.getUnitID(), this.getFzRegister(), 1)[0];
+        return (short) (register.toShort() / this.getForceDivisor());
     }
 
     public short getMx() throws ModbusException {
         InputRegister register = this.getModbusSerialMaster()
-                .readInputRegisters(UNIT_ID, MX_REGISTER, 1)[0];
-        return (short) (register.toShort() / MOMENT_DIVISOR);
+                .readInputRegisters(this.getUnitID(), this.getMxRegister(), 1)[0];
+        return (short) (register.toShort() / this.getMomentDivisor());
     }
 
     public short getMy() throws ModbusException {
         InputRegister register = this.getModbusSerialMaster()
-                .readInputRegisters(UNIT_ID, MY_REGISTER, 1)[0];
-        return (short) (register.toShort() / MY_REGISTER);
+                .readInputRegisters(this.getUnitID(), this.getMyRegister(), 1)[0];
+        return (short) (register.toShort() / this.getMomentDivisor());
     }
 
     public short getMz() throws ModbusException {
         InputRegister register = this.getModbusSerialMaster()
-                .readInputRegisters(UNIT_ID, MZ_REGISTER, 1)[0];
-        return (short) (register.toShort() / MOMENT_DIVISOR);
+                .readInputRegisters(this.getUnitID(), this.getMzRegister(), 1)[0];
+        return (short) (register.toShort() / this.getMomentDivisor());
     }
 
     public short getAx() throws ModbusException {
         InputRegister register = this.getModbusSerialMaster()
-                .readInputRegisters(UNIT_ID, AX_REGISTER, 1)[0];
-        return (short) (register.toShort() / AX_REGISTER);
+                .readInputRegisters(this.getUnitID(), this.getAxRegister(), 1)[0];
+        return (short) (register.toShort() / this.getAccelerationDivisor());
     }
 
     public short getAy() throws ModbusException {
         InputRegister register = this.getModbusSerialMaster()
-                .readInputRegisters(UNIT_ID, AY_REGISTER, 1)[0];
-        return (short) (register.toShort() / AY_REGISTER);
+                .readInputRegisters(this.getUnitID(), this.getAyRegister(), 1)[0];
+        return (short) (register.toShort() / this.getAccelerationDivisor());
     }
 
     public short getAz() throws ModbusException {
         InputRegister register = this.getModbusSerialMaster()
-                .readInputRegisters(UNIT_ID, AZ_REGISTER, 1)[0];
-        return (short) (register.toShort() / AZ_REGISTER);
+                .readInputRegisters(this.getUnitID(), this.azRegister, 1)[0];
+        return (short) (register.toShort() / this.getAccelerationDivisor());
     }
 
     public short[] getSixAxisMeasure() throws ModbusException {
         InputRegister[] registers = this.getModbusSerialMaster()
-                .readInputRegisters(UNIT_ID, FX_REGISTER, 6);
+                .readInputRegisters(this.getUnitID(), this.getFxRegister(), 6);
 
         assert registers.length == 6;
 
@@ -131,9 +350,9 @@ public class RobotiqFt {
             result[i] = registers[i].toShort();
 
             if (i < 3) {
-                result[i] /= FORCE_DIVISOR;
+                result[i] /= this.getForceDivisor();
             } else {
-                result[i] /= MOMENT_DIVISOR;
+                result[i] /= this.getMomentDivisor();
             }
         }
         return result;
@@ -141,10 +360,10 @@ public class RobotiqFt {
 
     public short[] getNineAxisMeasure() throws ModbusException {
         InputRegister[] wrenchRegisters = this.getModbusSerialMaster()
-                .readInputRegisters(UNIT_ID, FX_REGISTER, 6);
+                .readInputRegisters(this.getUnitID(), this.getFxRegister(), 6);
 
         InputRegister[] accelerationRegisters = this.getModbusSerialMaster()
-                .readInputRegisters(UNIT_ID, AX_REGISTER, 3);
+                .readInputRegisters(this.getUnitID(), this.getAxRegister(), 3);
 
         assert wrenchRegisters.length == 6;
         assert accelerationRegisters.length == 3;
@@ -154,14 +373,14 @@ public class RobotiqFt {
             result[i] = wrenchRegisters[i].toShort();
 
             if (i < 3) {
-                result[i] /= FORCE_DIVISOR;
+                result[i] /= this.getForceDivisor();
             } else {
-                result[i] /= MOMENT_DIVISOR;
+                result[i] /= this.getMomentDivisor();
             }
         }
 
         for (int i = 0; i < 3; i++) {
-            result[6 + i] = (short) (accelerationRegisters[i].toShort() / ACCELERATION_DIVISOR);
+            result[6 + i] = (short) (accelerationRegisters[i].toShort() / this.getAccelerationDivisor());
         }
 
         return result;
@@ -180,18 +399,6 @@ public class RobotiqFt {
     public short[] getAccelerations() throws ModbusException {
         short[] data = {this.getAx(), this.getAy(), this.getAz()};
         return data;
-    }
-
-    private static SerialParameters setDefaultSerialParameters() {
-        SerialParameters serialParameters = new SerialParameters();
-        serialParameters.setPortName(SerialUtilities.findSerialPort());
-        serialParameters.setBaudRate(BAUDRATE);
-        serialParameters.setDatabits(DATA_BITS);
-        serialParameters.setStopbits(STOP_BIT);
-        serialParameters.setParity(PARITY);
-        serialParameters.setEncoding(ENCODING);
-        serialParameters.setEcho(false);
-        return serialParameters;
     }
 
     public ModbusSerialMaster getModbusSerialMaster() {

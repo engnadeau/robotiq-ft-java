@@ -1,31 +1,24 @@
 package me.nicholasnadeau.robotiq.ft;
 
 import com.fazecast.jSerialComm.SerialPort;
-import org.pmw.tinylog.Logger;
+
+import java.util.Arrays;
 
 /**
  * Created by nicholas on 2016-09-13.
  */
 public class SerialUtilities {
-    static final String[] ROBOTIQ_FT_PORT_NAME = {"cu", "FTX"};
+    public static void main(String[] args) {
+        System.out.println(Arrays.toString(getSerialPortNames()));
+    }
 
-    public static String findSerialPort() {
-        String portName = null;
+    public static String[] getSerialPortNames() {
+        SerialPort[] commPorts = SerialPort.getCommPorts();
 
-        Logger.info("Finding serial ports");
-        SerialPort[] serialPorts = SerialPort.getCommPorts();
-        for (SerialPort serialPort : serialPorts) {
-            String tempPortName = serialPort.getSystemPortName();
-
-            boolean isPortFound = tempPortName.toLowerCase().contains(ROBOTIQ_FT_PORT_NAME[0].toLowerCase())
-                    && tempPortName.toLowerCase().contains(ROBOTIQ_FT_PORT_NAME[1].toLowerCase());
-
-            if (isPortFound) {
-                portName = tempPortName;
-                Logger.info("Found Robotiq sensor:\t" + portName);
-            }
+        String[] names = new String[commPorts.length];
+        for (int i = 0; i < commPorts.length; i++) {
+            names[i] = commPorts[i].getSystemPortName();
         }
-
-        return portName;
+        return names;
     }
 }
