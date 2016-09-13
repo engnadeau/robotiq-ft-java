@@ -29,9 +29,9 @@ public class RobotiqFt {
     private int axRegister;
     private int ayRegister;
     private int azRegister;
-    private short forceDivisor;
-    private short momentDivisor;
-    private short accelerationDivisor;
+    private double forceDivisor;
+    private double momentDivisor;
+    private double accelerationDivisor;
     private String portName;
     private String parity;
     private String encoding;
@@ -199,27 +199,27 @@ public class RobotiqFt {
         this.azRegister = azRegister;
     }
 
-    public short getForceDivisor() {
+    public double getForceDivisor() {
         return this.forceDivisor;
     }
 
-    public void setForceDivisor(short forceDivisor) {
+    public void setForceDivisor(double forceDivisor) {
         this.forceDivisor = forceDivisor;
     }
 
-    public short getMomentDivisor() {
+    public double getMomentDivisor() {
         return this.momentDivisor;
     }
 
-    public void setMomentDivisor(short momentDivisor) {
+    public void setMomentDivisor(double momentDivisor) {
         this.momentDivisor = momentDivisor;
     }
 
-    public short getAccelerationDivisor() {
+    public double getAccelerationDivisor() {
         return this.accelerationDivisor;
     }
 
-    public void setAccelerationDivisor(short accelerationDivisor) {
+    public void setAccelerationDivisor(double accelerationDivisor) {
         this.accelerationDivisor = accelerationDivisor;
     }
 
@@ -285,67 +285,67 @@ public class RobotiqFt {
         return isSuccess;
     }
 
-    public short getFx() throws ModbusException {
+    public double getFx() throws ModbusException {
         InputRegister register = this.getModbusSerialMaster()
                 .readInputRegisters(this.getUnitID(), this.getFxRegister(), 1)[0];
-        return (short) (register.toShort() / this.getForceDivisor());
+        return (register.toShort() / this.getForceDivisor());
     }
 
-    public short getFy() throws ModbusException {
+    public double getFy() throws ModbusException {
         InputRegister register = this.getModbusSerialMaster()
                 .readInputRegisters(this.getUnitID(), this.getFyRegister(), 1)[0];
-        return (short) (register.toShort() / this.getForceDivisor());
+        return (register.toShort() / this.getForceDivisor());
     }
 
-    public short getFz() throws ModbusException {
+    public double getFz() throws ModbusException {
         InputRegister register = this.getModbusSerialMaster()
                 .readInputRegisters(this.getUnitID(), this.getFzRegister(), 1)[0];
-        return (short) (register.toShort() / this.getForceDivisor());
+        return (register.toShort() / this.getForceDivisor());
     }
 
-    public short getMx() throws ModbusException {
+    public double getMx() throws ModbusException {
         InputRegister register = this.getModbusSerialMaster()
                 .readInputRegisters(this.getUnitID(), this.getMxRegister(), 1)[0];
-        return (short) (register.toShort() / this.getMomentDivisor());
+        return (register.toShort() / this.getMomentDivisor());
     }
 
-    public short getMy() throws ModbusException {
+    public double getMy() throws ModbusException {
         InputRegister register = this.getModbusSerialMaster()
                 .readInputRegisters(this.getUnitID(), this.getMyRegister(), 1)[0];
-        return (short) (register.toShort() / this.getMomentDivisor());
+        return (register.toShort() / this.getMomentDivisor());
     }
 
-    public short getMz() throws ModbusException {
+    public double getMz() throws ModbusException {
         InputRegister register = this.getModbusSerialMaster()
                 .readInputRegisters(this.getUnitID(), this.getMzRegister(), 1)[0];
-        return (short) (register.toShort() / this.getMomentDivisor());
+        return (register.toShort() / this.getMomentDivisor());
     }
 
-    public short getAx() throws ModbusException {
+    public double getAx() throws ModbusException {
         InputRegister register = this.getModbusSerialMaster()
                 .readInputRegisters(this.getUnitID(), this.getAxRegister(), 1)[0];
-        return (short) (register.toShort() / this.getAccelerationDivisor());
+        return (register.toShort() / this.getAccelerationDivisor());
     }
 
-    public short getAy() throws ModbusException {
+    public double getAy() throws ModbusException {
         InputRegister register = this.getModbusSerialMaster()
                 .readInputRegisters(this.getUnitID(), this.getAyRegister(), 1)[0];
-        return (short) (register.toShort() / this.getAccelerationDivisor());
+        return (register.toShort() / this.getAccelerationDivisor());
     }
 
-    public short getAz() throws ModbusException {
+    public double getAz() throws ModbusException {
         InputRegister register = this.getModbusSerialMaster()
-                .readInputRegisters(this.getUnitID(), this.azRegister, 1)[0];
-        return (short) (register.toShort() / this.getAccelerationDivisor());
+                .readInputRegisters(this.getUnitID(), this.getAzRegister(), 1)[0];
+        return (register.toShort() / this.getAccelerationDivisor());
     }
 
-    public short[] getSixAxisMeasure() throws ModbusException {
+    public double[] getSixAxisMeasure() throws ModbusException {
         InputRegister[] registers = this.getModbusSerialMaster()
                 .readInputRegisters(this.getUnitID(), this.getFxRegister(), 6);
 
         assert registers.length == 6;
 
-        short[] result = new short[6];
+        double[] result = new double[6];
         for (int i = 0; i < 6; i++) {
             result[i] = registers[i].toShort();
 
@@ -358,7 +358,7 @@ public class RobotiqFt {
         return result;
     }
 
-    public short[] getNineAxisMeasure() throws ModbusException {
+    public double[] getNineAxisMeasure() throws ModbusException {
         InputRegister[] wrenchRegisters = this.getModbusSerialMaster()
                 .readInputRegisters(this.getUnitID(), this.getFxRegister(), 6);
 
@@ -368,36 +368,32 @@ public class RobotiqFt {
         assert wrenchRegisters.length == 6;
         assert accelerationRegisters.length == 3;
 
-        short[] result = new short[9];
-        for (int i = 0; i < 6; i++) {
-            result[i] = wrenchRegisters[i].toShort();
-
+        double[] result = new double[9];
+        for (int i = 0; i < result.length; i++) {
             if (i < 3) {
-                result[i] /= this.getForceDivisor();
+                result[i] = wrenchRegisters[i].toShort() / this.getForceDivisor();
+            } else if (i < 6) {
+                result[i] = wrenchRegisters[i].toShort() / this.getMomentDivisor();
             } else {
-                result[i] /= this.getMomentDivisor();
+                result[i] = accelerationRegisters[i - 6].toShort() / this.getAccelerationDivisor();
             }
-        }
-
-        for (int i = 0; i < 3; i++) {
-            result[6 + i] = (short) (accelerationRegisters[i].toShort() / this.getAccelerationDivisor());
         }
 
         return result;
     }
 
-    public short[] getForces() throws ModbusException {
-        short[] data = {this.getFx(), this.getFy(), this.getFz()};
+    public double[] getForces() throws ModbusException {
+        double[] data = {this.getFx(), this.getFy(), this.getFz()};
         return data;
     }
 
-    public short[] getMoments() throws ModbusException {
-        short[] data = {this.getMx(), this.getMy(), this.getMz()};
+    public double[] getMoments() throws ModbusException {
+        double[] data = {this.getMx(), this.getMy(), this.getMz()};
         return data;
     }
 
-    public short[] getAccelerations() throws ModbusException {
-        short[] data = {this.getAx(), this.getAy(), this.getAz()};
+    public double[] getAccelerations() throws ModbusException {
+        double[] data = {this.getAx(), this.getAy(), this.getAz()};
         return data;
     }
 
