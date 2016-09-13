@@ -38,6 +38,9 @@ public class RobotiqFt {
     private SerialParameters serialParameters;
     private ModbusSerialMaster modbusSerialMaster;
 
+    /**
+     * Constructs a sensor object using config.properties
+     */
     public RobotiqFt() {
         boolean isSuccess = this.loadProperties();
 
@@ -49,6 +52,10 @@ public class RobotiqFt {
         }
     }
 
+    /**
+     * Constructs a sensor object given the input.
+     * @param serialParameters defined manually
+     */
     public RobotiqFt(SerialParameters serialParameters) {
         this.serialParameters = serialParameters;
         this.modbusSerialMaster = new ModbusSerialMaster(this.getSerialParameters());
