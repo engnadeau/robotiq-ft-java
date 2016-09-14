@@ -7,42 +7,25 @@ import com.ghgande.j2mod.modbus.util.SerialParameters;
 import org.pmw.tinylog.Logger;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.Arrays;
 import java.util.Properties;
 
 /**
  * Created by nicholas on 2016-09-13.
  */
-public class RobotiqFtMaster {
-    private static final String CONFIG_FILE = "config.properties";
-    private int unitID;
-    private int fxRegister;
-    private int fyRegister;
-    private int fzRegister;
-    private int mxRegister;
-    private int myRegister;
-    private int mzRegister;
-    private int axRegister;
-    private int ayRegister;
-    private int azRegister;
-    private double forceDivisor;
-    private double momentDivisor;
-    private double accelerationDivisor;
-    private SerialParameters serialParameters;
+public class RobotiqFtMaster extends AbstractRobotiqFtEntity {
+
     private ModbusSerialMaster modbusSerialMaster;
 
     /**
      * Constructs a sensor object using config.properties
      */
-    public RobotiqFtMaster() {
-        boolean isSuccess = this.loadProperties();
+    public RobotiqFtMaster() throws IOException {
+        Properties properties = SerialUtilities.loadProperties();
 
-        if (isSuccess) {
-            this.modbusSerialMaster = new ModbusSerialMaster(this.getSerialParameters());
-        } else {
-            throw new IllegalStateException();
-        }
+        this.loadModbusParameters(properties);
+        this.setSerialParameters(SerialUtilities.generateSerialParameters(properties));
+        this.modbusSerialMaster = new ModbusSerialMaster(this.getSerialParameters());
     }
 
     /**
@@ -51,7 +34,7 @@ public class RobotiqFtMaster {
      * @param serialParameters defined manually
      */
     public RobotiqFtMaster(SerialParameters serialParameters) {
-        this.serialParameters = serialParameters;
+        this.setSerialParameters(serialParameters);
         this.modbusSerialMaster = new ModbusSerialMaster(this.getSerialParameters());
     }
 
@@ -62,8 +45,8 @@ public class RobotiqFtMaster {
      */
     public static void main(String[] args) {
         Logger.info("Running simple RobotiqFT connection test");
-        RobotiqFtMaster robotiqFtMaster = new RobotiqFtMaster();
         try {
+            RobotiqFtMaster robotiqFtMaster = new RobotiqFtMaster();
             robotiqFtMaster.connect();
 
             int maxTime = 20;
@@ -79,242 +62,6 @@ public class RobotiqFtMaster {
         } catch (Exception e) {
             Logger.error(e);
         }
-    }
-
-    /**
-     * @return unit ID of sensor
-     */
-    public int getUnitID() {
-        return this.unitID;
-    }
-
-    /**
-     * @param unitID of sensor
-     */
-    public void setUnitID(int unitID) {
-        this.unitID = unitID;
-    }
-
-    /**
-     * @return modbus register
-     */
-    public int getFxRegister() {
-        return this.fxRegister;
-    }
-
-    /**
-     * @param fxRegister modbus register
-     */
-    public void setFxRegister(int fxRegister) {
-        this.fxRegister = fxRegister;
-    }
-
-    /**
-     * @return modbus register
-     */
-    public int getFyRegister() {
-        return this.fyRegister;
-    }
-
-    /**
-     * @param fyRegister modbus register
-     */
-    public void setFyRegister(int fyRegister) {
-        this.fyRegister = fyRegister;
-    }
-
-    /**
-     * @return modbus register
-     */
-    public int getFzRegister() {
-        return this.fzRegister;
-    }
-
-    /**
-     * @param fzRegister modbus register
-     */
-    public void setFzRegister(int fzRegister) {
-        this.fzRegister = fzRegister;
-    }
-
-    /**
-     * @return modbus register
-     */
-    public int getMxRegister() {
-        return this.mxRegister;
-    }
-
-    /**
-     * @param mxRegister modbus register
-     */
-    public void setMxRegister(int mxRegister) {
-        this.mxRegister = mxRegister;
-    }
-
-    /**
-     * @return modbus register
-     */
-    public int getMyRegister() {
-        return this.myRegister;
-    }
-
-    /**
-     * @param myRegister modbus register
-     */
-    public void setMyRegister(int myRegister) {
-        this.myRegister = myRegister;
-    }
-
-    /**
-     * @return modbus register
-     */
-    public int getMzRegister() {
-        return this.mzRegister;
-    }
-
-    /**
-     * @param mzRegister modbus register
-     */
-    public void setMzRegister(int mzRegister) {
-        this.mzRegister = mzRegister;
-    }
-
-    /**
-     * @return modbus register
-     */
-    public int getAxRegister() {
-        return this.axRegister;
-    }
-
-    /**
-     * @param axRegister modbus register
-     */
-    public void setAxRegister(int axRegister) {
-        this.axRegister = axRegister;
-    }
-
-    /**
-     * @return modbus register
-     */
-    public int getAyRegister() {
-        return this.ayRegister;
-    }
-
-    /**
-     * @param ayRegister modbus register
-     */
-    public void setAyRegister(int ayRegister) {
-        this.ayRegister = ayRegister;
-    }
-
-    /**
-     * @return modbus register
-     */
-    public int getAzRegister() {
-        return this.azRegister;
-    }
-
-    /**
-     * @param azRegister modbus register
-     */
-    public void setAzRegister(int azRegister) {
-        this.azRegister = azRegister;
-    }
-
-    /**
-     * @return modbus value divisor
-     */
-    public double getForceDivisor() {
-        return this.forceDivisor;
-    }
-
-    /**
-     * @param forceDivisor modbus value divisor
-     */
-    public void setForceDivisor(double forceDivisor) {
-        this.forceDivisor = forceDivisor;
-    }
-
-    /**
-     * @return modbus value divisor
-     */
-    public double getMomentDivisor() {
-        return this.momentDivisor;
-    }
-
-    /**
-     * @param momentDivisor modbus value divisor
-     */
-    public void setMomentDivisor(double momentDivisor) {
-        this.momentDivisor = momentDivisor;
-    }
-
-    /**
-     * @return modbus value divisor
-     */
-    public double getAccelerationDivisor() {
-        return this.accelerationDivisor;
-    }
-
-    /**
-     * @param accelerationDivisor modbus value divisor
-     */
-    public void setAccelerationDivisor(double accelerationDivisor) {
-        this.accelerationDivisor = accelerationDivisor;
-    }
-
-    /**
-     * @return success of loading process
-     */
-    private boolean loadProperties() {
-        Properties properties = new Properties();
-        boolean isSuccess = true;
-
-        // load a properties file
-        try {
-            ClassLoader loader = Thread.currentThread().getContextClassLoader();
-            try (InputStream inputStream = loader.getResourceAsStream(CONFIG_FILE)) {
-                properties.load(inputStream);
-            }
-        } catch (IOException e) {
-            Logger.error(e);
-            isSuccess = false;
-        }
-
-        // set the properties
-        if (isSuccess) {
-            // set serial parameter
-            SerialParameters serialParameters = new SerialParameters();
-            serialParameters.setPortName(properties.getProperty("comm_port"));
-            serialParameters.setBaudRate(Integer.parseInt(properties.getProperty("baudrate")));
-            serialParameters.setDatabits(Integer.parseInt(properties.getProperty("data_bits")));
-            serialParameters.setStopbits(Integer.parseInt(properties.getProperty("stop_bit")));
-            serialParameters.setParity(properties.getProperty("parity"));
-            serialParameters.setEncoding(properties.getProperty("encoding"));
-            serialParameters.setEcho(false);
-            this.setSerialParameters(serialParameters);
-
-            // set instance parameters
-            this.setUnitID(Integer.parseInt(properties.getProperty("unit_id")));
-
-            this.setFxRegister(Integer.parseInt(properties.getProperty("fx_register")));
-            this.setFyRegister(Integer.parseInt(properties.getProperty("fy_register")));
-            this.setFzRegister(Integer.parseInt(properties.getProperty("fz_register")));
-
-            this.setMxRegister(Integer.parseInt(properties.getProperty("mx_register")));
-            this.setMyRegister(Integer.parseInt(properties.getProperty("my_register")));
-            this.setMzRegister(Integer.parseInt(properties.getProperty("mz_register")));
-
-            this.setAxRegister(Integer.parseInt(properties.getProperty("ax_register")));
-            this.setAyRegister(Integer.parseInt(properties.getProperty("ay_register")));
-            this.setAzRegister(Integer.parseInt(properties.getProperty("az_register")));
-
-            this.setForceDivisor(Short.parseShort(properties.getProperty("force_divisor")));
-            this.setMomentDivisor(Short.parseShort(properties.getProperty("moment_divisor")));
-            this.setAccelerationDivisor(Short.parseShort(properties.getProperty("acceleration_divisor")));
-        }
-
-        return isSuccess;
     }
 
     /**
@@ -504,19 +251,5 @@ public class RobotiqFtMaster {
      */
     public void connect() throws Exception {
         this.getModbusSerialMaster().connect();
-    }
-
-    /**
-     * @return serial parameters
-     */
-    public SerialParameters getSerialParameters() {
-        return this.serialParameters;
-    }
-
-    /**
-     * @param serialParameters
-     */
-    public void setSerialParameters(SerialParameters serialParameters) {
-        this.serialParameters = serialParameters;
     }
 }
