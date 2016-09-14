@@ -16,22 +16,22 @@ The communication protocol (and basis for `config.properties`) for using a FT Se
 ### Quick Tests
 - Run `SerialUtilities.java` to list available serial ports (sensor should be connected and seen here)
 - Update `comm_port` in `config.properties` to the proper serial port (e.g., `COM3` for Windows, `cu.usbserial-FTXU0M1B` for OSX)
-- Run `RobotiqFt.java` for a 20 second burst of data printed to the console 
+- Run `RobotiqFtMaster.java` for a 20 second burst of data printed to the console
 
 ### Example
 ```java
 public static void main(String[] args) {
     Logger.info("Running simple RobotiqFT connection test");
-    RobotiqFt robotiqFt = new RobotiqFt();
+    RobotiqFtMaster robotiqFtMaster = new RobotiqFtMaster();
     try {
-        robotiqFt.connect();
+        robotiqFtMaster.connect();
 
         int maxTime = 20;
         Logger.info(String.format("Reading from sensor for %d seconds", maxTime));
         long startTime = System.currentTimeMillis();
         while ((System.currentTimeMillis() - startTime) < (maxTime * 1000)) {
             try {
-                System.out.println(Arrays.toString(robotiqFt.getCompleteMeasure()));
+                System.out.println(Arrays.toString(robotiqFtMaster.getCompleteMeasure()));
             } catch (ModbusException e) {
                 Logger.error(e);
             }

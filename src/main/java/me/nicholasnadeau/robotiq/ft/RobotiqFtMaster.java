@@ -14,7 +14,7 @@ import java.util.Properties;
 /**
  * Created by nicholas on 2016-09-13.
  */
-public class RobotiqFt {
+public class RobotiqFtMaster {
     private static final String CONFIG_FILE = "config.properties";
     private int unitID;
     private int fxRegister;
@@ -35,7 +35,7 @@ public class RobotiqFt {
     /**
      * Constructs a sensor object using config.properties
      */
-    public RobotiqFt() {
+    public RobotiqFtMaster() {
         boolean isSuccess = this.loadProperties();
 
         if (isSuccess) {
@@ -50,7 +50,7 @@ public class RobotiqFt {
      *
      * @param serialParameters defined manually
      */
-    public RobotiqFt(SerialParameters serialParameters) {
+    public RobotiqFtMaster(SerialParameters serialParameters) {
         this.serialParameters = serialParameters;
         this.modbusSerialMaster = new ModbusSerialMaster(this.getSerialParameters());
     }
@@ -62,16 +62,16 @@ public class RobotiqFt {
      */
     public static void main(String[] args) {
         Logger.info("Running simple RobotiqFT connection test");
-        RobotiqFt robotiqFt = new RobotiqFt();
+        RobotiqFtMaster robotiqFtMaster = new RobotiqFtMaster();
         try {
-            robotiqFt.connect();
+            robotiqFtMaster.connect();
 
             int maxTime = 20;
             Logger.info(String.format("Reading from sensor for %d seconds", maxTime));
             long startTime = System.currentTimeMillis();
             while ((System.currentTimeMillis() - startTime) < (maxTime * 1000)) {
                 try {
-                    System.out.println(Arrays.toString(robotiqFt.getCompleteMeasure()));
+                    System.out.println(Arrays.toString(robotiqFtMaster.getCompleteMeasure()));
                 } catch (ModbusException e) {
                     Logger.error(e);
                 }
