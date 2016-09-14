@@ -502,7 +502,7 @@ public class RobotiqFtMaster {
     /**
      * @throws Exception if connection to sensor fails
      */
-    private void connect() throws Exception {
+    public void connect() throws Exception {
         this.getModbusSerialMaster().connect();
     }
 
