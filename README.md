@@ -1,8 +1,13 @@
-[![Build Status](https://travis-ci.org/nnadeau/robotiq-ft-java.svg?branch=master)](https://travis-ci.org/nnadeau/robotiq-ft-java)
-[![Coverage Status](https://coveralls.io/repos/github/nnadeau/robotiq-ft-java/badge.svg?branch=master)](https://coveralls.io/github/nnadeau/robotiq-ft-java?branch=master)
-[![Dependency Status](https://www.versioneye.com/user/projects/57d87a3d4307470032353a01/badge.svg?style=flat-square)](https://www.versioneye.com/user/projects/57d87a3d4307470032353a01)
-[![GitHub version](https://badge.fury.io/gh/nnadeau%2Frobotiq-ft-java.svg)](https://badge.fury.io/gh/nnadeau%2Frobotiq-ft-java)
-[![codecov](https://codecov.io/gh/nnadeau/robotiq-ft-java/branch/master/graph/badge.svg)](https://codecov.io/gh/nnadeau/robotiq-ft-java)
+[![GitHub tag](https://img.shields.io/github/tag/nnadeau/robotiq-ft-java.svg?maxAge=2592000?style=flat-square)](https://github.com/nnadeau/robotiq-ft-java/releases)
+
+[![Travis](https://img.shields.io/travis/nnadeau/robotiq-ft-java.svg?maxAge=2592000?style=flat-square)](https://travis-ci.org/nnadeau/robotiq-ft-java)
+
+[![VersionEye](https://img.shields.io/versioneye/d/nnadeau/robotiq-ft-java.svg?maxAge=2592000?style=flat-square)](https://www.versioneye.com/user/projects/57d87a3d4307470032353a01)
+
+[![Coveralls](https://img.shields.io/coveralls/nnadeau/robotiq-ft-java.svg?maxAge=2592000?style=flat-square)](https://coveralls.io/repos/github/nnadeau/robotiq-ft-java/badge.svg?branch=master)
+[![Codecov](https://img.shields.io/codecov/c/github/nnadeau/robotiq-ft-java.svg?maxAge=2592000?style=flat-square)](https://codecov.io/gh/nnadeau/robotiq-ft-java)
+[![Codacy grade](https://img.shields.io/codacy/nnadeau/robotiq-ft-java.svg?maxAge=2592000?style=flat-square)]()
+[![Codacy coverage](https://img.shields.io/codacy/nnadeau/robotiq-ft-java.svg?maxAge=2592000?style=flat-square)]()
 
 
 # Robotiq FT Sensor - Java
