@@ -2,7 +2,6 @@
 [![Build Status](https://travis-ci.org/nnadeau/robotiq-ft-java.svg?branch=master)](https://travis-ci.org/nnadeau/robotiq-ft-java)
 [![Dependency Status](https://www.versioneye.com/user/projects/57d87a3d4307470032353a01/badge.svg?style=flat-square)](https://www.versioneye.com/user/projects/57d87a3d4307470032353a01)
 
-[![Coverage Status](https://coveralls.io/repos/github/nnadeau/robotiq-ft-java/badge.svg)](https://coveralls.io/github/nnadeau/robotiq-ft-java)
 [![codecov](https://codecov.io/gh/nnadeau/robotiq-ft-java/branch/master/graph/badge.svg)](https://codecov.io/gh/nnadeau/robotiq-ft-java)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/fb8fb1d66ba142af97e32ae710964af5)](https://www.codacy.com/app/nicholas-nadeau/robotiq-ft-java?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=nnadeau/robotiq-ft-java&amp;utm_campaign=Badge_Grade)
 [![Code Climate](https://codeclimate.com/github/nnadeau/robotiq-ft-java/badges/gpa.svg)](https://codeclimate.com/github/nnadeau/robotiq-ft-java)
