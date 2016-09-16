@@ -33,9 +33,8 @@ public class SerialUtilities {
 
         // load a properties file
         ClassLoader loader = Thread.currentThread().getContextClassLoader();
-        try (InputStream inputStream = loader.getResourceAsStream(CONFIG_FILE)) {
-            properties.load(inputStream);
-        }
+        InputStream inputStream = loader.getResourceAsStream(CONFIG_FILE);
+        properties.load(inputStream);
 
         return properties;
     }
