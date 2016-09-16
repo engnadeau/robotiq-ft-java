@@ -1,7 +1,11 @@
 plugins {
     id "com.github.johnrengelman.shadow" version "1.2.3"
     id 'java'
+    id 'net.saliman.cobertura' version '2.3.1'
+    id 'com.github.kt3k.coveralls' version '2.6.3'
 }
+
+cobertura.coverageFormats = ['html', 'xml'] // coveralls plugin depends on xml format report
 
 group 'me.nicholasnadeau'
 version '0.1.0'
