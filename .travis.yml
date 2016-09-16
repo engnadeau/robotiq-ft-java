@@ -12,7 +12,7 @@ script:
   - gradle build
 
 after_success: 
-  - cobertura coveralls
+  - coveralls
   - bash <(curl -s https://codecov.io/bash)
 
 # notification settings
