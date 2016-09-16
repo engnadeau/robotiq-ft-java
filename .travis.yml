@@ -10,7 +10,9 @@ script:
   - gradle clean
   - gradle build
 
-after_success: coveralls
+after_success: 
+  - coveralls
+  - bash <(curl -s https://codecov.io/bash)
 
 # notification settings
 notifications:
