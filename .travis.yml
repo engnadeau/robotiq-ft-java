@@ -18,6 +18,9 @@ script:
   - ./gradlew -Ptag=$TRAVIS_TAG build
   - ./gradlew -Ptag=$TRAVIS_TAG shadowJar
 
+after_script:
+  - find . -type f
+
 notifications:
   email: false
 
@@ -28,7 +31,7 @@ deploy:
     secure: JAs/L2BMgoRzdmKwm23pqelpNJ9Mp9UTyiceD/xol3eJUts5EvjZMpuZE4QixLRB9HGmEJTXl+ysm2AXC3Up1Wxt0q3j1p3I3x3JmhQZhbLabjaUEQB3z+3zUf4NdVVvu/+fjNQQT1HaddBgaz2gkWmV6Ot4UGYohfSWcdDDcX3eGLsZAYAxQhPxwpxb160/QCOnwgtLNBycJl5rPPnNqdESNdlq4VaYAXUXQrudBthy6/mJBZCGOD+eFCYB9iP9IDF5zHJY1mTIbaT56S9sPPuziwZViBHIEN9NdlsBOhwzxcXD5d0iv8q/6QGugRK+fWqWHmOpG75s9PrtuGAchwOmN7f8MH+kMmL8Po+NBo3UGN+UaCW4lBhCmxbgg9jiq3vqqk5afW9rPlcW+abIJIjGaxVeAzQwQXJXvkPrbnFjHDTUFs8maVQj0GVqiJKWoipwCdOMbSgAlVVgzaAsUKLjAawJHCDiabW235EqJ0d88noAH0zrwe0Ec5fBZDmi0rVOshyAb3WxwXNqgEHhudXWaytYvXspxvYvtkrx/pmVFY2Hbo2/gGcZ0SOwGx5qMn4wkHpWeOPyH+B3cVDDQRx4PY8Uosm0rfG8MMIRguH4q4Tyg8MQGCji11FiO2LH9i1wgoOb2VmN2D0GzyIpNV8N9C+BaWg6IYyb+6Lo+ag=
   file_glob: true
   file:
-    - robotiq-ft-java-*.jar
+    - ./build/libs/robotiq-ft-java-*.jar
   on:
     repo: nnadeau/robotiq-ft-java
     tags: true
