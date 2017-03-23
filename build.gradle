@@ -4,23 +4,26 @@ plugins {
 }
 
 group 'me.nicholasnadeau'
-version '0.1.0'
-
-sourceCompatibility = 1.6
 
 repositories {
     mavenCentral()
-
-    flatDir {
-        dirs 'lib'
-    }
 }
 
 dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
 
     // https://mvnrepository.com/artifact/com.ghgande/j2mod
-    compile group: 'com.ghgande', name: 'j2mod', version: '2.3.0'
+    compile group: 'com.ghgande', name: 'j2mod', version: '2.3.1'
 }
 
+task wrapper(type: Wrapper) {
+    gradleVersion = '3.4.1'
 }
+
+if (project.hasProperty('tag')) {
+    version = project.tag
+} else {
+    version = '0'
+}
+
+shadowJar.archiveName = "$project.name-$project.version-all.jar"
