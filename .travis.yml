@@ -6,14 +6,13 @@ jdk:
   - openjdk7
   - openjdk6
 
-# build
+install:
+  - chmod +x gradlew
+
 script:
-  - gradle clean
-  - gradle build
+  - ./gradlew clean
+  - ./gradlew -Ptag=$TRAVIS_TAG build
+  - ./gradlew -Ptag=$TRAVIS_TAG shadowJar
 
-after_success: 
-  - bash <(curl -s https://codecov.io/bash)
-
-# notification settings
 notifications:
-    on_failure: change
+  email: false
