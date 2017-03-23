@@ -4,16 +4,17 @@ import com.ghgande.j2mod.modbus.ModbusException;
 import com.ghgande.j2mod.modbus.facade.ModbusSerialMaster;
 import com.ghgande.j2mod.modbus.procimg.InputRegister;
 import com.ghgande.j2mod.modbus.util.SerialParameters;
-import org.pmw.tinylog.Logger;
 
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Properties;
+import java.util.logging.Logger;
 
 /**
  * Created by nicholas on 2016-09-13.
  */
 public class RobotiqFtMaster extends AbstractRobotiqFtEntity {
+    private final static Logger LOGGER = Logger.getLogger(RobotiqFtMaster.class.getSimpleName());
 
     private ModbusSerialMaster modbusSerialMaster;
 
@@ -44,23 +45,23 @@ public class RobotiqFtMaster extends AbstractRobotiqFtEntity {
      * @param args
      */
     public static void main(String[] args) {
-        Logger.info("Running simple RobotiqFT connection test");
+        LOGGER.info("Running simple RobotiqFT connection test");
         try {
             RobotiqFtMaster robotiqFtMaster = new RobotiqFtMaster();
             robotiqFtMaster.connect();
 
             int maxTime = 20;
-            Logger.info(String.format("Reading from sensor for %d seconds", maxTime));
+            LOGGER.info(String.format("Reading from sensor for %d seconds", maxTime));
             long startTime = System.currentTimeMillis();
             while ((System.currentTimeMillis() - startTime) < (maxTime * 1000)) {
                 try {
                     System.out.println(Arrays.toString(robotiqFtMaster.getCompleteMeasure()));
                 } catch (ModbusException e) {
-                    Logger.error(e);
+                    LOGGER.severe(String.valueOf(e));
                 }
             }
         } catch (Exception e) {
-            Logger.error(e);
+            LOGGER.severe(String.valueOf(e));
         }
     }
 
