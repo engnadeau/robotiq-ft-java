@@ -1,6 +1,7 @@
 [![GitHub tag](https://img.shields.io/github/tag/nnadeau/robotiq-ft-java.svg?maxAge=2592000?style=flat-square)](https://github.com/nnadeau/robotiq-ft-java/releases)
 [![Build Status](https://travis-ci.org/nnadeau/robotiq-ft-java.svg?branch=master)](https://travis-ci.org/nnadeau/robotiq-ft-java)
 [![Dependency Status](https://www.versioneye.com/user/projects/57d87a3d4307470032353a01/badge.svg?style=flat-square)](https://www.versioneye.com/user/projects/57d87a3d4307470032353a01)
+[![](https://jitpack.io/v/nnadeau/robotiq-ft-java.svg)](https://jitpack.io/#nnadeau/robotiq-ft-java)
 
 # Robotiq FT Sensor - Java
 An unofficial Java package for cross-platform serial communication with a Robotiq FT Sensor
