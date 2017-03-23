@@ -6,6 +6,7 @@ matrix:
     - jdk: oraclejdk7
     - jdk: oraclejdk8
     - jdk: openjdk7
+    - jdk: openjdk6
   allow_failures:
     - jdk: openjdk6
 
