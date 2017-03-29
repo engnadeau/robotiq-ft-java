@@ -20,10 +20,29 @@ public abstract class AbstractRobotiqFtEntity {
     private int axRegister;
     private int ayRegister;
     private int azRegister;
+    private short dataStreamRegister;
+    private short dataStreamInitValue;
+    private short dataStreamStopValue;
     private double forceDivisor;
     private double momentDivisor;
     private double accelerationDivisor;
     private SerialParameters serialParameters;
+
+    public int getDataStreamInitValue() {
+        return dataStreamInitValue;
+    }
+
+    public void setDataStreamInitValue(short dataStreamInitValue) {
+        this.dataStreamInitValue = dataStreamInitValue;
+    }
+
+    public int getDataStreamStopValue() {
+        return dataStreamStopValue;
+    }
+
+    public void setDataStreamStopValue(short dataStreamStopValue) {
+        this.dataStreamStopValue = dataStreamStopValue;
+    }
 
     /**
      * @return serial parameters
@@ -240,5 +259,17 @@ public abstract class AbstractRobotiqFtEntity {
         this.setForceDivisor(Short.parseShort(properties.getProperty("force_divisor")));
         this.setMomentDivisor(Short.parseShort(properties.getProperty("moment_divisor")));
         this.setAccelerationDivisor(Short.parseShort(properties.getProperty("acceleration_divisor")));
+
+        this.setDataStreamRegister(Short.parseShort(properties.getProperty("data_stream_register")));
+        this.setDataStreamInitValue(Short.parseShort(properties.getProperty("data_stream_init_value")));
+        this.setDataStreamStopValue(Short.parseShort(properties.getProperty("data_stream_stop_value")));
+    }
+
+    public int getDataStreamRegister() {
+        return dataStreamRegister;
+    }
+
+    public void setDataStreamRegister(short dataStreamRegister) {
+        this.dataStreamRegister = dataStreamRegister;
     }
 }

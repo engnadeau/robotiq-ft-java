@@ -3,6 +3,9 @@ package me.nicholasnadeau.robotiq.ft;
 import com.ghgande.j2mod.modbus.ModbusException;
 import com.ghgande.j2mod.modbus.facade.ModbusSerialMaster;
 import com.ghgande.j2mod.modbus.procimg.InputRegister;
+import com.ghgande.j2mod.modbus.procimg.Register;
+import com.ghgande.j2mod.modbus.procimg.SimpleInputRegister;
+import com.ghgande.j2mod.modbus.procimg.SimpleRegister;
 import com.ghgande.j2mod.modbus.util.SerialParameters;
 
 import java.io.IOException;
@@ -10,9 +13,6 @@ import java.util.Arrays;
 import java.util.Properties;
 import java.util.logging.Logger;
 
-/**
- * Created by nicholas on 2016-09-13.
- */
 public class RobotiqFtMaster extends AbstractRobotiqFtEntity {
     final Logger logger = Logger.getLogger(this.getClass().getSimpleName());
 
@@ -227,5 +227,22 @@ public class RobotiqFtMaster extends AbstractRobotiqFtEntity {
      */
     public void connect() throws Exception {
         this.getModbusSerialMaster().connect();
+    }
+
+    public void startDataStream() throws ModbusException, InterruptedException {
+        // stop first?
+        stopDataStream();
+
+        Register register = new SimpleInputRegister(this.getDataStreamInitValue());
+        this.getModbusSerialMaster().writeSingleRegister(this.getUnitID(), this.getDataStreamRegister(), register);
+    }
+
+    public void stopDataStream() throws ModbusException, InterruptedException {
+        Register register = new SimpleInputRegister(this.getDataStreamStopValue());
+
+        for (int i = 0; i < 50; i++) {
+            this.getModbusSerialMaster().writeSingleRegister(this.getUnitID(), this.getDataStreamRegister(), register);
+            Thread.sleep(10);
+        }
     }
 }
