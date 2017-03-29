@@ -19,7 +19,7 @@ public class RobotiqFtMaster extends AbstractRobotiqFtEntity {
     private ModbusSerialMaster modbusSerialMaster;
 
     /**
-     * Constructs a sensor object using config.properties
+     * Constructs a sensor object using robotiq-ft.properties
      */
     public RobotiqFtMaster() throws IOException {
         Properties properties = SerialUtilities.loadProperties();

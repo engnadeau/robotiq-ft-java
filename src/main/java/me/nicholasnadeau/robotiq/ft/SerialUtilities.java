@@ -12,7 +12,7 @@ import java.util.Properties;
  * Created by nicholas on 2016-09-13.
  */
 public class SerialUtilities {
-    private static final String CONFIG_FILE = "config.properties";
+    private static final String CONFIG_FILE = "robotiq-ft.properties";
 
     public static void main(String[] args) {
         System.out.println(Arrays.toString(getSerialPortNames()));
