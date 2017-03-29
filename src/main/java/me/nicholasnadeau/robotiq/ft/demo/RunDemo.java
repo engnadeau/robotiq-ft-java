@@ -25,7 +25,7 @@ public class RunDemo {
             robotiqFtMaster.connect();
 
             int maxTime = 20;
-            logger.info(String.format("Reading from sensor for %d seconds", maxTime));
+            logger.info(String.format("Reading from sensor for %d seconds using Modbus RTU", maxTime));
             long startTime = System.currentTimeMillis();
             while ((System.currentTimeMillis() - startTime) < (maxTime * 1000)) {
                 try {
