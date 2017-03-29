@@ -5,18 +5,12 @@ import com.ghgande.j2mod.modbus.util.SerialParameters;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Arrays;
 import java.util.Properties;
+import java.util.logging.Logger;
 
-/**
- * Created by nicholas on 2016-09-13.
- */
-public class SerialUtilities {
+public class RobotiqFtSerial {
+    protected final static Logger logger = Logger.getLogger(RobotiqFtSerial.class.getSimpleName());
     private static final String CONFIG_FILE = "robotiq-ft.properties";
-
-    public static void main(String[] args) {
-        System.out.println(Arrays.toString(getSerialPortNames()));
-    }
 
     public static String[] getSerialPortNames() {
         SerialPort[] commPorts = SerialPort.getCommPorts();
@@ -29,9 +23,8 @@ public class SerialUtilities {
     }
 
     public static Properties loadProperties() throws IOException {
+        logger.info("Loading properties filed:\t" + CONFIG_FILE);
         Properties properties = new Properties();
-
-        // load a properties file
         ClassLoader loader = Thread.currentThread().getContextClassLoader();
         InputStream inputStream = loader.getResourceAsStream(CONFIG_FILE);
         properties.load(inputStream);
@@ -50,6 +43,7 @@ public class SerialUtilities {
         serialParameters.setEncoding(properties.getProperty("encoding"));
         serialParameters.setEcho(false);
 
+        logger.info(serialParameters.toString());
         return serialParameters;
     }
 }

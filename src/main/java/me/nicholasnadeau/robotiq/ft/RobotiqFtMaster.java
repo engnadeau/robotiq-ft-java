@@ -14,7 +14,7 @@ import java.util.logging.Logger;
  * Created by nicholas on 2016-09-13.
  */
 public class RobotiqFtMaster extends AbstractRobotiqFtEntity {
-    private final static Logger LOGGER = Logger.getLogger(RobotiqFtMaster.class.getSimpleName());
+    final Logger logger = Logger.getLogger(this.getClass().getSimpleName());
 
     private ModbusSerialMaster modbusSerialMaster;
 
@@ -22,10 +22,10 @@ public class RobotiqFtMaster extends AbstractRobotiqFtEntity {
      * Constructs a sensor object using robotiq-ft.properties
      */
     public RobotiqFtMaster() throws IOException {
-        Properties properties = SerialUtilities.loadProperties();
+        Properties properties = RobotiqFtSerial.loadProperties();
 
         this.loadModbusParameters(properties);
-        this.setSerialParameters(SerialUtilities.generateSerialParameters(properties));
+        this.setSerialParameters(RobotiqFtSerial.generateSerialParameters(properties));
         this.modbusSerialMaster = new ModbusSerialMaster(this.getSerialParameters());
     }
 
@@ -39,31 +39,6 @@ public class RobotiqFtMaster extends AbstractRobotiqFtEntity {
         this.modbusSerialMaster = new ModbusSerialMaster(this.getSerialParameters());
     }
 
-    /**
-     * Convenient connection test
-     *
-     * @param args
-     */
-    public static void main(String[] args) {
-        LOGGER.info("Running simple RobotiqFT connection test");
-        try {
-            RobotiqFtMaster robotiqFtMaster = new RobotiqFtMaster();
-            robotiqFtMaster.connect();
-
-            int maxTime = 20;
-            LOGGER.info(String.format("Reading from sensor for %d seconds", maxTime));
-            long startTime = System.currentTimeMillis();
-            while ((System.currentTimeMillis() - startTime) < (maxTime * 1000)) {
-                try {
-                    System.out.println(Arrays.toString(robotiqFtMaster.getCompleteMeasure()));
-                } catch (ModbusException e) {
-                    LOGGER.severe(String.valueOf(e));
-                }
-            }
-        } catch (Exception e) {
-            LOGGER.severe(String.valueOf(e));
-        }
-    }
 
     /**
      * @return measured force [N]
