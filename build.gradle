@@ -7,13 +7,12 @@ group 'me.nicholasnadeau'
 
 repositories {
     mavenCentral()
+    maven { url 'https://jitpack.io' }
 }
 
 dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
-
-    // https://mvnrepository.com/artifact/com.ghgande/j2mod
-    compile group: 'com.ghgande', name: 'j2mod', version: '2.3.2'
+    compile 'com.github.nnadeau:j2mod:-SNAPSHOT'
 }
 
 task wrapper(type: Wrapper) {
